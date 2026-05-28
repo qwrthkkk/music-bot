@@ -1,3 +1,3 @@
 python-telegram-bot==21.6
-yt-dlp==2024.12.23
+yt-dlp
 spotdl==4.2.10
