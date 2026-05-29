@@ -85,6 +85,7 @@ async def download_audio(url: str, platform: str, tmpdir: str) -> tuple[str | No
     else:
         download_url = url
 
+    cookies_file = "/app/youtube_cookies.txt"
     cmd = [
         "yt-dlp",
         "--extract-audio",
@@ -94,11 +95,10 @@ async def download_audio(url: str, platform: str, tmpdir: str) -> tuple[str | No
         "--add-metadata",
         "--no-playlist",
         "--max-filesize", "49M",
-        # YouTube bot detection workarounds
-        "--extractor-args", "youtube:player_client=tv",
-        "-o", output_template,
-        download_url
     ]
+    if os.path.exists(cookies_file):
+        cmd += ["--cookies", cookies_file]
+    cmd += ["-o", output_template, download_url]
 
     try:
         proc = await asyncio.create_subprocess_exec(
